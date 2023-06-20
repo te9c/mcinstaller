@@ -8,27 +8,49 @@ namespace MCInstaller.Core
         public static void Information(string message)
         {
             if (!Quiet)
-                Console.WriteLine("[INFO] -> " + message);
+            {
+                var lines = message.Split('\n');
+                foreach (var line in lines)
+                {
+                    Console.WriteLine("[INFO] -> " + line);
+                }
+            }
         }
 
         public static void VerboseInformation(string message)
         {
             if (!Quiet)
+            {
                 if (Verbose)
-                    Console.WriteLine("[INFO] -> " + message);
+                {
+                    var lines = message.Split('\n');
+                    foreach (var line in lines)
+                    {
+                        Console.WriteLine("[INFO] -> " + line);
+                    }
+                }
+            }
         }
 
         public static void Warn(string message)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[WARN] -> " + message);
+            var lines = message.Split('\n');
+            foreach (var line in lines)
+            {
+                Console.WriteLine("[WARN] -> " + line);
+            }
             Console.ResetColor();
         }
 
         public static void Error(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("[ERROR] -> " + message);
+            var lines = message.Split('\n');
+            foreach (var line in lines)
+            {
+                Console.WriteLine("[ERROR] -> " + line);
+            }
             Console.ResetColor();
         }
     }
