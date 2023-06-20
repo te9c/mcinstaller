@@ -6,11 +6,13 @@ namespace MCInstaller.Utilities
     {
         public readonly string PathToJava;
         public readonly JavaVersion Version;
+        public readonly string FullVersion;
 
-        private JavaReference(string path, JavaVersion version)
+        private JavaReference(string path, JavaVersion version, string fullVersion)
         {
             PathToJava = path;
             Version = version;
+            FullVersion = fullVersion;
         }
 
         public static JavaReference[] FindAll()
@@ -49,20 +51,20 @@ namespace MCInstaller.Utilities
                         version = JavaVersion.v17;
                     else
                         throw new Exception($"Unkown java version: {line.ElementAt(0)}");
-                    javaReferences.Add(new JavaReference(Path.Combine(line.ElementAt(2), "bin", "java"), version));
+                    javaReferences.Add(new JavaReference(Path.Combine(line.ElementAt(2), "bin", "java"), version, line.ElementAt(0)));
                 }
             }
             return javaReferences.ToArray();
         }
 
-        public static JavaReference? FindLatest()
+        public static JavaReference? FindLatestOrDefault()
         {
             var javaReferences = FindAll();
 
             return javaReferences.OrderBy(p => p.Version).LastOrDefault();
         }
 
-        public static JavaReference? Find(JavaVersion version)
+        public static JavaReference? FindOrDefault(JavaVersion version)
         {
             var javaReferences = FindAll();
 

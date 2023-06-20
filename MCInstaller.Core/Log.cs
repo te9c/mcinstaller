@@ -19,6 +19,7 @@ namespace MCInstaller.Core
 
         public static void VerboseInformation(string message)
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             if (!Quiet)
             {
                 if (Verbose)
@@ -30,6 +31,7 @@ namespace MCInstaller.Core
                     }
                 }
             }
+            Console.ResetColor();
         }
 
         public static void Warn(string message)

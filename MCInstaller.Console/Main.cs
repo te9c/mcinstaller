@@ -12,7 +12,7 @@ return await parserResult.MapResult(async (opts) =>
         Log.Verbose = opts.Verbose;
         Log.Quiet = opts.Quiet;
 
-        Log.Information("Starting mcinstaller v" + Assembly.GetExecutingAssembly().GetName().Version + '.');
+        Log.Information($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}.");
 
         opts.InstallationPath = Path.GetFullPath(opts.InstallationPath);
 
@@ -40,6 +40,19 @@ return await parserResult.MapResult(async (opts) =>
             return await Task.FromResult(-1);
         }
 
+        Log.Information("Trying to find java...");
+        JavaReference? java = JavaReference.FindLatestOrDefault();
+        if (java is null)
+        {
+            Log.Error("Cant find java.");
+            Log.Error("Please, be sure that java is isntalled on your computer.");
+            return await Task.FromResult(-1);
+        }
+        Log.Information("Java is found!");
+
+        Log.VerboseInformation($"Java version: {java.FullVersion}");
+        Log.VerboseInformation($"Java path: {java.PathToJava}");
+
         JarReference jar = new(mcversion!, opts.ServerType);
 
         await jar.InstallAsync(opts.InstallationPath);
@@ -48,10 +61,10 @@ return await parserResult.MapResult(async (opts) =>
 
         IServerInstance server = opts.ServerType switch
         {
-            ServerType.Vanilla => new VanillaInstance(jar, opts.InstallationPath),
-            ServerType.Forge => new ForgeInstance(jar, opts.InstallationPath),
-            ServerType.Paper => new PaperInstance(jar, opts.InstallationPath),
-            _ => throw new Exception()
+            ServerType.Vanilla => new VanillaInstance(jar, java, opts.InstallationPath),
+            ServerType.Forge => new ForgeInstance(jar, java, opts.InstallationPath),
+            ServerType.Paper => new PaperInstance(jar, java, opts.InstallationPath),
+            _ => throw new Exception("Invalid ServerType")
         };
         await server.Init();
 

@@ -24,6 +24,9 @@ namespace MCInstaller.Console
         [Option('t', "type", Required = false, HelpText = "Defines type of server. Available options are Forge, Paper and Vanilla. Default are Vanilla.")]
         public ServerType ServerType { get; set; } = MCInstaller.Core.ServerType.Vanilla;
 
+        [Option("java", Required = false, HelpText = "You can manually specify path to java. As default it will tries to find path automatically.")]
+        public string JavaPath { get; set; } = null!;
+
         [Usage(ApplicationAlias = "mcinstaller")]
         public static IEnumerable<Example> Examples
         {

@@ -6,11 +6,13 @@ namespace MCInstaller.Instances
     public class ForgeInstance : IServerInstance
     {
         public readonly JarReference Jar;
+        public readonly JavaReference Java;
         public readonly string WorkingDir;
 
-        public ForgeInstance(JarReference jar, string workingDir)
+        public ForgeInstance(JarReference jar, JavaReference java, string workingDir)
         {
             Jar = jar;
+            Java = java;
             WorkingDir = workingDir;
         }
 
