@@ -28,6 +28,11 @@ return await parserResult.MapResult(async (opts) =>
             return await Task.FromResult(-1);
         }
 
+        if (opts.Forced)
+        {
+            Log.Warn("Running with --forced option. Be aware if any errors occurs!");
+        }
+
         MinecraftVersion? mcversion;
         if (!MinecraftVersion.TryParse(opts.MinecraftVersion, out mcversion))
         {
@@ -43,12 +48,12 @@ return await parserResult.MapResult(async (opts) =>
 
         IServerInstance server = opts.ServerType switch
         {
-            ServerType.Vanilla => new VanillaInstance(),
-            ServerType.Forge => new ForgeInstance(),
-            ServerType.Paper => new PaperInstance(),
+            ServerType.Vanilla => new VanillaInstance(jar, opts.InstallationPath),
+            ServerType.Forge => new ForgeInstance(jar, opts.InstallationPath),
+            ServerType.Paper => new PaperInstance(jar, opts.InstallationPath),
             _ => throw new Exception()
         };
-        await server.InitAsync();
+        await server.Init();
 
         Log.Information("Initializing done.");
         Log.Information("You need to agree with eula and run file run.sh to complete installation");

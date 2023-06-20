@@ -1,6 +1,5 @@
 ﻿using MCInstaller.Core;
 using ServerJarsAPI;
-using ServerJarsAPI.Events;
 
 namespace MCInstaller.Utilities
 {
@@ -47,26 +46,25 @@ namespace MCInstaller.Utilities
             return true;
         }
 
+        public string GetFileName() =>
+            Version.ToString() + '-' + Type.ToString() + ".jar";
+
         public async Task InstallAsync(string path)
         {
             if (!await IsValidAsync())
                 throw new Exception($"{this} is not valid");
 
-            Log.Information($"Downloading {Type.ToString()} {Version.ToString()} in {Path.GetFullPath(path)}.");
+            Log.Information($"Downloading {Type.ToString()} {Version.ToString()}.");
+            Log.VerboseInformation($"Path: {Path.GetFullPath(path)}");
 
             var serverJar = new ServerJars();
 
-            using var fileStream = File.Create(Path.Combine(path, Version.ToString() + '-' + Type.ToString() + ".jar"));
-            Progress<ProgressEventArgs> progress = new();
-            progress.ProgressChanged += (_, e) =>
+            using (var fileStream = File.Create(Path.Combine(path, GetFileName())))
             {
-                if (!Log.Quiet)
-                    Console.Write($"\r[INFO] -> Progress: {e.ProgressPercentage}% ({e.BytesTransferred / 1024 / 1024}MB / {e.TotalBytes / 1024 / 1024}MB)          ");
-            };
-            await serverJar.GetJar(fileStream, TypeString, CategoryString, Version.ToString(), progress: progress);
-            await fileStream.FlushAsync();
-            Console.WriteLine();
-
+                await serverJar.GetJar(fileStream, TypeString, CategoryString, Version.ToString());
+                await fileStream.FlushAsync();
+                Log.VerboseInformation($"Downloaded {fileStream.Length / 1024 / 1024}MB to {fileStream.Name}");
+            }
             Log.Information($"Jar downloaded.");
         }
     }

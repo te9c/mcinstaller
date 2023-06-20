@@ -11,12 +11,17 @@ namespace MCInstaller.Instances
         public VanillaInstance(JarReference jar, string workingDir)
         {
             Jar = jar;
-            WorkingDir = workingDir;
+            WorkingDir = Path.GetFullPath(workingDir);
         }
 
-        public Task Init()
+        public async Task Init()
         {
-            throw new TodoException();
+            if (!Path.Exists(WorkingDir))
+                throw new IOException($"Path {WorkingDir} doesn't exists");
+
+            string pathToJar = Path.Combine(WorkingDir, Jar.GetFileName());
+            if (!Path.Exists(pathToJar))
+                await Jar.InstallAsync(WorkingDir);
         }
     }
 }
