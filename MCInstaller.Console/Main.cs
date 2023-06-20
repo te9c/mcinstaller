@@ -2,8 +2,8 @@
 using MCInstaller.Utilities;
 using MCInstaller.Console;
 using MCInstaller.Core;
+using MCInstaller.Instances;
 using System.Reflection;
-using System.Diagnostics;
 
 var parserResult = Parser.Default.ParseArguments<Arguments>(args);
 
@@ -24,7 +24,7 @@ return await parserResult.MapResult(async (opts) =>
 
         if (Directory.GetFiles(opts.InstallationPath).Any() && !opts.Forced)
         {
-            Log.Error($"Directory {opts.InstallationPath} isn't empty. You can override it with --forced option.");
+            Log.Error($"Directory {opts.InstallationPath} isn't empty. You can override this restriction with --forced option.");
             return await Task.FromResult(-1);
         }
 
@@ -41,20 +41,17 @@ return await parserResult.MapResult(async (opts) =>
 
         Log.Information("Initializing server.");
 
-        var server = new Process();
-
-        server.StartInfo.UseShellExecute = false;
-        server.StartInfo.FileName = "java";
-        server.StartInfo.CreateNoWindow = true;
-        server.StartInfo.Arguments = "-jar " + Path.Combine(opts.InstallationPath, mcversion!.ToString() + '-' + opts.ServerType.ToString() + ".jar" + " nogui");
-        server.StartInfo.WorkingDirectory = opts.InstallationPath;
-        server.Start();
-
-        server.WaitForExit();
-        Log.Information(server.ExitCode.ToString());
+        IServerInstance server = opts.ServerType switch
+        {
+            ServerType.Vanilla => new VanillaInstance(),
+            ServerType.Forge => new ForgeInstance(),
+            ServerType.Paper => new PaperInstance(),
+            _ => throw new Exception()
+        };
+        await server.InitAsync();
 
         Log.Information("Initializing done.");
-        Log.Information("You need to agree to eula and run file run.sh to complete installation");
+        Log.Information("You need to agree with eula and run file run.sh to complete installation");
 
         return await Task.FromResult(0);
     },
