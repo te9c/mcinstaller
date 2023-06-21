@@ -42,8 +42,7 @@ namespace MCInstaller.Core
             Write(message, "ERROR", ConsoleColor.Red);
         }
 
-        public static void ExternalOutput(string message) { ExternalOutput(message, "OUTPUT"); }
-        public static void ExternalOutput(string message, string tag)
+        public static void ExternalOutput(string message, string tag = "OUTPUT")
         {
             if (Verbose)
             {
