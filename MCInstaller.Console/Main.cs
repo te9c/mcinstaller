@@ -55,8 +55,6 @@ return await parserResult.MapResult(async (opts) =>
 
         JarReference jar = new(mcversion!, opts.ServerType);
 
-        await jar.InstallAsync(opts.InstallationPath);
-
         Log.Information("Initializing server.");
 
         IServerInstance server = opts.ServerType switch

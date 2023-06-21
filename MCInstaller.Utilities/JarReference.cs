@@ -46,8 +46,10 @@ namespace MCInstaller.Utilities
             return true;
         }
 
-        public string GetFileName() =>
-            Version.ToString() + '-' + Type.ToString() + ".jar";
+        public string GetFileName()
+        {
+            return Version.ToString() + '-' + Type.ToString() + ".jar";
+        }
 
         public async Task InstallAsync(string path)
         {

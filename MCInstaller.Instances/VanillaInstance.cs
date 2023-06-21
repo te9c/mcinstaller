@@ -1,5 +1,6 @@
 using MCInstaller.Utilities;
 using MCInstaller.Core.Exceptions;
+using MCInstaller.Core;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -8,9 +9,9 @@ namespace MCInstaller.Instances
 {
     public class VanillaInstance : IServerInstance
     {
-        public readonly JarReference Jar;
-        public readonly JavaReference Java;
-        public readonly string WorkingDir;
+        public JarReference Jar { get; init; }
+        public JavaReference Java { get; init; }
+        public string WorkingDir { get; init; }
 
         public VanillaInstance(JarReference jar, JavaReference java, string workingDir)
         {
@@ -28,8 +29,7 @@ namespace MCInstaller.Instances
             if (!Path.Exists(pathToJar))
                 await Jar.InstallAsync(WorkingDir);
 
-            await GenerateJvmArgsFile();
-            await GenerateRunFile();
+            Log.VerboseInformation("Server jar is standalone. No need for further installation.");
 
             using (var process = new Process())
             {
@@ -49,6 +49,11 @@ namespace MCInstaller.Instances
                 process.WaitForExit();
 
             }
+
+            if (!Path.Exists(Path.Combine(WorkingDir, "user_jvm_args.txt")))
+                await GenerateJvmArgsFile();
+            if (!Path.Exists(Path.Combine(WorkingDir, "run.sh")))
+                await GenerateRunFile();
         }
 
         private async Task GenerateJvmArgsFile()

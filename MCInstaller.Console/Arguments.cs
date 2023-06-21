@@ -38,7 +38,7 @@ namespace MCInstaller.Console
                         new Arguments { InstallationPath = ".", MinecraftVersion = "1.12.2" }),
 
                     new Example("Install forge minecraft 1.18.2 server in folder /home/Nikita/my-minecraft-server",
-                        new Arguments { InstallationPath = "/home/Nikita/my-minecraft-server", MinecraftVersion = "1.18.2", ServerType = Core.ServerType.Forge})
+                        new Arguments { InstallationPath = "/home/Nikita/my-minecraft-server", MinecraftVersion = "1.18.2", ServerType = MCInstaller.Core.ServerType.Forge})
                 };
             }
         }

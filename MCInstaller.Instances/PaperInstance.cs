@@ -5,9 +5,9 @@ namespace MCInstaller.Instances
 {
     public class PaperInstance : IServerInstance
     {
-        public readonly JarReference Jar;
-        public readonly JavaReference Java;
-        public readonly string WorkingDir;
+        public JarReference Jar { get; init; }
+        public JavaReference Java { get; init; }
+        public string WorkingDir { get; init; }
 
         public PaperInstance(JarReference jar, JavaReference java, string workingDir)
         {
