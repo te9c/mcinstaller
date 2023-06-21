@@ -5,55 +5,50 @@ namespace MCInstaller.Core
         public static bool Verbose = false;
         public static bool Quiet = false;
 
+        private static void Write(string message, string tag, ConsoleColor foregroundColor)
+        {
+            var lines = message.Split('\n');
+            foreach (var line in lines)
+            {
+                Console.ForegroundColor = foregroundColor;
+                Console.WriteLine($"[{tag}] -> " + line);
+                Console.ResetColor();
+            }
+        }
+
         public static void Information(string message)
         {
             if (!Quiet)
             {
-                var lines = message.Split('\n');
-                foreach (var line in lines)
-                {
-                    Console.WriteLine("[INFO] -> " + line);
-                }
+                Write(message, "INFO", ConsoleColor.White);
             }
         }
 
         public static void VerboseInformation(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            if (!Quiet)
+            if (Verbose)
             {
-                if (Verbose)
-                {
-                    var lines = message.Split('\n');
-                    foreach (var line in lines)
-                    {
-                        Console.WriteLine("[INFO] -> " + line);
-                    }
-                }
+                Write(message, "VERBOSE", ConsoleColor.Cyan);
             }
-            Console.ResetColor();
         }
 
         public static void Warn(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            var lines = message.Split('\n');
-            foreach (var line in lines)
-            {
-                Console.WriteLine("[WARN] -> " + line);
-            }
-            Console.ResetColor();
+            Write(message, "WARN", ConsoleColor.Yellow);
         }
 
         public static void Error(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            var lines = message.Split('\n');
-            foreach (var line in lines)
+            Write(message, "ERROR", ConsoleColor.Red);
+        }
+
+        public static void ExternalOutput(string message) { ExternalOutput(message, "OUTPUT"); }
+        public static void ExternalOutput(string message, string tag)
+        {
+            if (Verbose)
             {
-                Console.WriteLine("[ERROR] -> " + line);
+                Write(message, tag, ConsoleColor.DarkGreen);
             }
-            Console.ResetColor();
         }
     }
 }
