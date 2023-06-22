@@ -34,7 +34,7 @@ return await parserResult.MapResult(async (opts) =>
         }
 
         MinecraftVersion? mcversion;
-        if (!MinecraftVersion.TryParse(opts.MinecraftVersion, out mcversion))
+        if (!MinecraftVersion.TryParse(opts.MinecraftVersion, out mcversion!))
         {
             Log.Error($"version {opts.MinecraftVersion} is in wrong format.");
             return await Task.FromResult(-1);
@@ -45,7 +45,6 @@ return await parserResult.MapResult(async (opts) =>
             Log.Warn("Manually specified java.");
             throw new MCInstaller.Core.Exceptions.TodoException();
         }
-
         Log.Information("Trying to find java...");
         JavaReference? java = JavaReference.FindLatestOrDefault();
         if (java is null)
@@ -54,12 +53,20 @@ return await parserResult.MapResult(async (opts) =>
             Log.Error("Please, be sure that java is isntalled on your computer.");
             return await Task.FromResult(-1);
         }
+        // if (opts.ServerType == ServerType.Forge)
+        // {
+        //     JavaVersion requiredVersion = mcversion.Minor switch
+        //     {
+        //         < 15 => throw new Exception(),
+        //         _ => throw new Exception()
+        //     };
+        // }
         Log.Information("Java is found!");
 
         Log.VerboseInformation($"Java version: {java.FullVersion}");
         Log.VerboseInformation($"Java path: {java.PathToJava}");
 
-        JarReference jar = new(mcversion!, opts.ServerType);
+        JarReference jar = new(mcversion, opts.ServerType);
 
         Log.Information("Initializing server.");
 

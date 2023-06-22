@@ -53,15 +53,22 @@ namespace MCInstaller.Utilities
 
         public async Task InstallAsync(string path)
         {
+            await InstallAsync(path, GetFileName());
+        }
+
+        public async Task InstallAsync(string path, string fileName)
+        {
             if (!await IsValidAsync())
                 throw new Exception($"{this} is not valid");
+
+            fileName = Path.ChangeExtension(fileName, ".jar");
 
             Log.Information($"Downloading {Type.ToString()} {Version.ToString()}.");
             Log.VerboseInformation($"Path: {Path.GetFullPath(path)}");
 
             var serverJar = new ServerJars();
 
-            using (var fileStream = File.Create(Path.Combine(path, GetFileName())))
+            using (var fileStream = File.Create(Path.Combine(path, fileName)))
             {
                 await serverJar.GetJar(fileStream, _typeString, _categoryString, Version.ToString());
                 await fileStream.FlushAsync();
