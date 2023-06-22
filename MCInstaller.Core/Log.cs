@@ -11,7 +11,10 @@ namespace MCInstaller.Core
             foreach (var line in lines)
             {
                 Console.ForegroundColor = foregroundColor;
-                Console.WriteLine($"[{tag}] -> " + line);
+                if (tag.Any())
+                    Console.WriteLine($"[{tag}] -> " + line);
+                else
+                    Console.WriteLine(line);
                 Console.ResetColor();
             }
         }

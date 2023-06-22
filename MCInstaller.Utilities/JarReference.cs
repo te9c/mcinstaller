@@ -7,22 +7,22 @@ namespace MCInstaller.Utilities
     {
         public readonly MinecraftVersion Version;
         public readonly ServerType Type;
-        public readonly string TypeString;
-        public readonly string CategoryString;
+        private readonly string _typeString;
+        private readonly string _categoryString;
 
         public JarReference(MinecraftVersion version, ServerType type)
         {
             Version = version;
             Type = type;
 
-            TypeString = type switch
+            _typeString = type switch
             {
                 ServerType.Vanilla => "vanilla",
                 ServerType.Forge => "modded",
                 ServerType.Paper => "servers",
                 _ => throw new Exception()
             };
-            CategoryString = type switch
+            _categoryString = type switch
             {
                 ServerType.Vanilla => "vanilla",
                 ServerType.Forge => "forge",
@@ -37,7 +37,7 @@ namespace MCInstaller.Utilities
 
             try
             {
-                await serverJars.GetDetails(TypeString, CategoryString, Version.ToString());
+                await serverJars.GetDetails(_typeString, _categoryString, Version.ToString());
             }
             catch
             {
@@ -63,7 +63,7 @@ namespace MCInstaller.Utilities
 
             using (var fileStream = File.Create(Path.Combine(path, GetFileName())))
             {
-                await serverJar.GetJar(fileStream, TypeString, CategoryString, Version.ToString());
+                await serverJar.GetJar(fileStream, _typeString, _categoryString, Version.ToString());
                 await fileStream.FlushAsync();
                 Log.VerboseInformation($"Downloaded {fileStream.Length / 1024 / 1024}MB to {fileStream.Name}");
             }

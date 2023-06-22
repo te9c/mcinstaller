@@ -55,55 +55,18 @@ namespace MCInstaller.Instances
                     };
                 }
 
+                Log.Information("Starting forge installer...");
                 process.Start();
 
                 process.BeginOutputReadLine();
 
                 await process.WaitForExitAsync();
+                Log.Information("forge installer exited.");
 
                 if (process.ExitCode == 127)
                     throw new Exception($"{Java.PathToJava} is not found.");
             }
             Log.VerboseInformation("Forge installed.");
-            Log.VerboseInformation("Processing to initializing server.");
-
-            string pathToJar = Directory.EnumerateFiles(WorkingDir, "forge*.jar").First();
-
-            Log.VerboseInformation(pathToJar);
-
-            using (var process = new Process())
-            {
-                var processInfo = new ProcessStartInfo
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    FileName = Java.PathToJava,
-                    Arguments = $"-jar {pathToJar} nogui",
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    WorkingDirectory = WorkingDir,
-                };
-
-                process.StartInfo = processInfo;
-                if (Log.Verbose)
-                {
-                    process.OutputDataReceived += (s, e) =>
-                    {
-                        string? input = e.Data;
-                        if (input is not null)
-                            Log.ExternalOutput(input, "SERVER");
-                    };
-                }
-
-                process.Start();
-
-                process.BeginOutputReadLine();
-
-                await process.WaitForExitAsync();
-
-                if (process.ExitCode == 127)
-                    throw new Exception($"{Java.PathToJava} is not found.");
-            }
 
             if (!Path.Exists(Path.Combine(WorkingDir, "user_jvm_args.txt")))
                 await GenerateJvmArgsFile();

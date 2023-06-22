@@ -43,10 +43,18 @@ namespace MCInstaller.Instances
                     RedirectStandardError = true,
                     Arguments = $"-jar {Jar.GetFileName()} nogui"
                 };
+                process.OutputDataReceived += (s, e) =>
+                {
+                    if (e.Data != null)
+                        Log.ExternalOutput(e.Data, "SERVER");
+                };
 
                 process.StartInfo = processInfo;
+                Log.Information("Starting server...");
                 process.Start();
+                process.BeginOutputReadLine();
                 process.WaitForExit();
+                Log.Information("Server exited.");
 
             }
 

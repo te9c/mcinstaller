@@ -40,6 +40,12 @@ return await parserResult.MapResult(async (opts) =>
             return await Task.FromResult(-1);
         }
 
+        if (opts.JavaPath != null)
+        {
+            Log.Warn("Manually specified java.");
+            throw new MCInstaller.Core.Exceptions.TodoException();
+        }
+
         Log.Information("Trying to find java...");
         JavaReference? java = JavaReference.FindLatestOrDefault();
         if (java is null)
@@ -67,7 +73,8 @@ return await parserResult.MapResult(async (opts) =>
         await server.Init();
 
         Log.Information("Initializing done.");
-        Log.Information("You need to agree with eula and run file run.sh to complete installation");
+        Log.Information($"Minecraft {jar.Type} {jar.Version} is installed.");
+        Log.Information($"Now you can run run.sh to start your server.");
 
         return await Task.FromResult(0);
     },
