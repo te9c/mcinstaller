@@ -46,7 +46,7 @@ return await parserResult.MapResult(async (opts) =>
             throw new MCInstaller.Core.Exceptions.TodoException();
         }
         Log.Information("Trying to find java...");
-        JavaReference? java = JavaReference.FindLatestOrDefault();
+        JavaReference? java = Java.FindLatestOrDefault();
         if (java is null)
         {
             Log.Error("Cant find java.");
