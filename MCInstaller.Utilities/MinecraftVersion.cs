@@ -1,3 +1,5 @@
+using MCInstaller.Core.Exceptions;
+
 namespace MCInstaller.Utilities
 {
     public class MinecraftVersion
@@ -26,7 +28,7 @@ namespace MCInstaller.Utilities
             string[] vers = version.Split('.');
 
             if (vers.Count() < 2 || vers.Count() > 3)
-                throw new Exception($"version {version} is in wrong format");
+                throw new ParseException($"version {version} is in wrong format");
 
             int major = Int32.Parse(vers[0]);
             int minor = Int32.Parse(vers[1]);
