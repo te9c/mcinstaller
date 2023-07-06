@@ -5,8 +5,16 @@ using MCInstaller.Console;
 using MCInstaller.Core;
 using MCInstaller.Instances;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 var parserResult = Parser.Default.ParseArguments<Arguments>(args);
+
+if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+{
+    Log.Error($"Your OS is {RuntimeInformation.OSDescription}.");
+    Log.Error("Only linux is supported at the moment.");
+    return await Task.FromResult(-1);
+}
 
 return await parserResult.MapResult(async (opts) =>
     {
