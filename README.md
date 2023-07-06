@@ -6,5 +6,5 @@ Using [ServerJars .NET API.](https://github.com/tekgator/ServerJars)
 
 ## Currently avaliable server types:
 - Vanilla
-- Forge (Currently no forge version selection cause of lack API)
+- Forge
 - Paper
