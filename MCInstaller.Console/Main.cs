@@ -1,5 +1,6 @@
 ﻿using CommandLine;
-using MCInstaller.Utilities;
+using MCInstaller.Jar;
+using MCInstaller.Java;
 using MCInstaller.Console;
 using MCInstaller.Core;
 using MCInstaller.Instances;

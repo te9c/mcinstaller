@@ -1,4 +1,5 @@
-using MCInstaller.Utilities;
+using MCInstaller.Jar;
+using MCInstaller.Java;
 
 namespace MCInstaller.Instances
 {

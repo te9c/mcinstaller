@@ -1,7 +1,7 @@
 ﻿using MCInstaller.Core;
 using ServerJarsAPI;
 
-namespace MCInstaller.Utilities
+namespace MCInstaller.Jar
 {
     public class JarReference
     {

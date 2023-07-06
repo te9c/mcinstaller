@@ -1,6 +1,6 @@
 using MCInstaller.Core.Exceptions;
 
-namespace MCInstaller.Utilities
+namespace MCInstaller.Jar
 {
     public class MinecraftVersion
     {

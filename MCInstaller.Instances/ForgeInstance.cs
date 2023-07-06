@@ -1,4 +1,5 @@
-using MCInstaller.Utilities;
+using MCInstaller.Jar;
+using MCInstaller.Java;
 using MCInstaller.Core.Exceptions;
 using MCInstaller.Core;
 using System.Diagnostics;

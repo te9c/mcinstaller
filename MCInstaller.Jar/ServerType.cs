@@ -1,10 +1,5 @@
-namespace MCInstaller.Core
+namespace MCInstaller.Jar
 {
-    public static class Constants
-    {
-
-    }
-
     public enum ServerType
     {
         Vanilla,
