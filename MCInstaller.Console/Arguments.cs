@@ -1,6 +1,6 @@
 using CommandLine;
 using CommandLine.Text;
-using MCInstaller.Core;
+using MCInstaller.Jar;
 
 namespace MCInstaller.Console
 {
@@ -22,7 +22,7 @@ namespace MCInstaller.Console
         public string MinecraftVersion { get; set; } = null!;
 
         [Option('t', "type", Required = false, HelpText = "Defines type of server. Available options are Forge, Paper and Vanilla. Default are Vanilla.")]
-        public ServerType ServerType { get; set; } = MCInstaller.Core.ServerType.Vanilla;
+        public ServerType ServerType { get; set; } = ServerType.Vanilla;
 
         [Option("java", Required = false, HelpText = "You can manually specify path to java. As default it will tries to find path automatically.")]
         public string JavaPath { get; set; } = null!;
@@ -38,7 +38,7 @@ namespace MCInstaller.Console
                         new Arguments { InstallationPath = ".", MinecraftVersion = "1.12.2" }),
 
                     new Example("Install forge minecraft 1.18.2 server in folder /home/Nikita/my-minecraft-server",
-                        new Arguments { InstallationPath = "/home/Nikita/my-minecraft-server", MinecraftVersion = "1.18.2", ServerType = MCInstaller.Core.ServerType.Forge})
+                        new Arguments { InstallationPath = "/home/Nikita/my-minecraft-server", MinecraftVersion = "1.18.2", ServerType = ServerType.Forge})
                 };
             }
         }

@@ -49,13 +49,13 @@ namespace MCInstaller.Java
                 var match = pattern.Match(version);
                 major = Int32.Parse(match.Groups["major"].Value);
 
-                if (match.Groups.ContainsKey("minor"))
+                if (match.Groups["minor"].Success)
                     minor = Int32.Parse(match.Groups["minor"].Value);
 
-                if (match.Groups.ContainsKey("security"))
+                if (match.Groups["security"].Success)
                     security = Int32.Parse(match.Groups["security"].Value);
 
-                if (match.Groups.ContainsKey("prerelease"))
+                if (match.Groups["prerelease"].Success)
                     prerelease = match.Groups["prerelease"].Value;
 
                 return new JavaVersion(version, major, minor, security, prerelease);

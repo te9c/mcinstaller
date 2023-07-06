@@ -47,14 +47,18 @@ return await parserResult.MapResult(async (opts) =>
             Log.Warn("Manually specified java.");
             throw new MCInstaller.Core.Exceptions.TodoException();
         }
+
         Log.Information("Trying to find java...");
-        JavaReference? java = Java.FindLatestOrDefault();
+
+        JavaChecker javaChecker = new();
+        JavaReference? java = javaChecker.CheckForJava().OrderBy(p => p.Version.Major).LastOrDefault();
         if (java is null)
         {
-            Log.Error("Cant find java.");
+            Log.Error("Can't find java.");
             Log.Error("Please, be sure that java is isntalled on your computer.");
             return await Task.FromResult(-1);
         }
+
         // if (opts.ServerType == ServerType.Forge)
         // {
         //     JavaVersion requiredVersion = mcversion.Minor switch
