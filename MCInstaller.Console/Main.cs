@@ -34,8 +34,9 @@ return await parserResult.MapResult(async (opts) =>
             Log.Warn("Running with --forced option. Be aware if any errors occurs!");
         }
 
+        var mcParser = new MinecraftVersionParser();
         MinecraftVersion? mcversion;
-        if (!MinecraftVersion.TryParse(opts.MinecraftVersion, out mcversion!))
+        if (!mcParser.TryParse(opts.MinecraftVersion, out mcversion!))
         {
             Log.Error($"version {opts.MinecraftVersion} is in wrong format.");
             return await Task.FromResult(-1);
@@ -64,7 +65,7 @@ return await parserResult.MapResult(async (opts) =>
         // }
         Log.Information("Java is found!");
 
-        Log.VerboseInformation($"Java version: {java.FullVersion}");
+        Log.VerboseInformation($"Java version: {java.Version.FullVersion}");
         Log.VerboseInformation($"Java path: {java.PathToJava}");
 
         JarReference jar = new(mcversion, opts.ServerType);
