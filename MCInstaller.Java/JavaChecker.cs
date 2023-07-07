@@ -41,7 +41,7 @@ namespace MCInstaller.Java
                                 continue;
                             var output = process.StandardError;
                             string versionStr = output.ReadToEnd().Split('\n')[0].Split(' ')[2].Trim('"');
-                            JavaVersion javaVer = JavaVersion.Parse(versionStr);
+                            JavaVersion javaVer = JavaParser.Default.Parse(versionStr);
                             if (!javaReferences.Where(p => p.Version.FullVersion == javaVer.FullVersion).Any())
                                 javaReferences.Add(new JavaReference(path, javaVer));
                         }

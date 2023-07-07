@@ -9,19 +9,19 @@ using System.Runtime.InteropServices;
 
 var parserResult = Parser.Default.ParseArguments<Arguments>(args);
 
-if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-{
-    Log.Error($"Your OS is {RuntimeInformation.OSDescription}.");
-    Log.Error("Only linux is supported at the moment.");
-    return await Task.FromResult(-1);
-}
-
 return await parserResult.MapResult(async (opts) =>
     {
         Log.Verbose = opts.Verbose;
         Log.Quiet = opts.Quiet;
 
         Log.Information($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}.");
+
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            Log.Error($"Your OS is {RuntimeInformation.OSDescription}.");
+            Log.Error("Only linux is supported at the moment.");
+            return await Task.FromResult(-1);
+        }
 
         opts.InstallationPath = Path.GetFullPath(opts.InstallationPath);
 
@@ -42,9 +42,8 @@ return await parserResult.MapResult(async (opts) =>
             Log.Warn("Running with --forced option. Be aware if any errors occurs!");
         }
 
-        var mcParser = new MinecraftVersionParser();
         MinecraftVersion? mcversion;
-        if (!mcParser.TryParse(opts.MinecraftVersion, out mcversion!))
+        if (!MinecraftVersionParser.Default.TryParse(opts.MinecraftVersion, out mcversion!))
         {
             Log.Error($"version {opts.MinecraftVersion} is in wrong format.");
             return await Task.FromResult(-1);

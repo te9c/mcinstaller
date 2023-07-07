@@ -5,6 +5,8 @@ namespace MCInstaller.Jar
 {
     public class MinecraftVersionParser
     {
+        public static MinecraftVersionParser Default { get; set; } = new();
+
         public MinecraftVersion Parse(string version)
         {
             int major = 1;
