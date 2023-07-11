@@ -28,7 +28,7 @@ $ dotnet run --project MCInstaller.Console -- <arguments>
 ```bash
 $ dotnet publish -o <output folder>
 $ cd <output folder>
-$ ./mcinstaller *arguments*
+$ ./mcinstaller <arguments>
 ```
 ## Usage
 **General use:**
