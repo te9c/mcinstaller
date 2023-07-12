@@ -44,14 +44,15 @@ The following command installs vanilla 1.12.2 minecraft server in current folder
 $ mcinstaller --minecraft-version 1.12.2 .
 ```
 
-## Arguments
-| Argument              | Short  | Description                                                                                                                             |
-| --------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `--minecraft-version` | `-m`   | Sets minecraft version to install in format `major.minor.patch` or `major.minor`. Available versions are >=1.7.4.                       |
-| `--type`              | `-t`   | Sets server type to install. Available options are `Vanilla`, `Forge` or `Paper`.                                                       |
-| `--java`              | `None` | (Currently not implemented) Manually specified path to java. By default, MCInstaller tries to find automatically required java version. |
-| `--forced`            | `-f`   | Overrides restriction on non-empty directories. (By default you can install only in empty directories)                                  |
-| `--verbose`           | `-v`   | Sets verbose message output. Mutually exclusive with `--quiet` option.                                                                  |
-| `--quiet`             | `-q`   | Do not print information messages (errors and warns still prints though). Mutually exclusive with `--verbose` option.                   |
-| `--help`              | `-h`   | Shows help screen.                                                                                                                      |
-| `--version`           | `-v`   | Prints version.                                                                                                                         |
+## Options
+| Key                   | Short  | Input                                                             | Description                                                                                                                             |
+| --------------------- | ------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `None`                | `None` | Empty output folder.                                              | **Required.** Sets output folder                                                                                                        |
+| `--minecraft-version` | `-m`   | Minecraft version in format `major.minor.patch` or `major.minor`. | **Required.** Sets minecraft version to install. Available versions are >=1.7.4.                                                        |
+| `--type`              | `-t`   | `Vanilla`, `Forge` or `Paper`.                                    | Sets server type to install.                                                                                                            |
+| `--java`              | `None` | Path to java.                                                     | (Currently not implemented) Manually specified path to java. By default, MCInstaller tries to find automatically required java version. |
+| `--forced`            | `-f`   | None.                                                             | Overrides restriction on non-empty directories. (By default you can install only in empty directories)                                  |
+| `--verbose`           | `-v`   | None.                                                             | Sets verbose message output. Mutually exclusive with `--quiet` option.                                                                  |
+| `--quiet`             | `-q`   | None.                                                             | Do not print information messages (errors and warns still prints though). Mutually exclusive with `--verbose` option.                   |
+| `--help`              | `None` | None.                                                             | Shows help screen.                                                                                                                      |
+| `--version`           | `None` | None.                                                             | Prints version.                                                                                                                         |
