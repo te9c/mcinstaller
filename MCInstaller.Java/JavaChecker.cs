@@ -67,7 +67,7 @@ namespace MCInstaller.Java
                 // OpenJDK 64-Bit Server VM (build 25.372-b07, mixed mode)
 
                 string versionStr = output.Split('\n')[0].Split(' ')[2].Trim('"');
-                JavaVersion javaVer = JavaParser.Default.Parse(versionStr);
+                JavaVersion javaVer = JavaVersionParser.Default.Parse(versionStr);
 
                 return new JavaReference(javaPath, javaVer);
             }

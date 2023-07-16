@@ -3,9 +3,9 @@ using MCInstaller.Core.Exceptions;
 
 namespace MCInstaller.Java
 {
-    public class JavaParser
+    public class JavaVersionParser
     {
-        public static JavaParser Default { get; set; } = new();
+        public static JavaVersionParser Default { get; set; } = new();
 
         public JavaVersion Parse(string version)
         {
