@@ -1,59 +1,90 @@
 using MCInstaller.Core.Exceptions;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace MCInstaller.Java
 {
     public class JavaChecker
     {
-        public JavaReference[] CheckForJava()
+        public static JavaChecker Default { get; set; } = new();
+
+        public JavaReference[] GetDefaultJavas()
         {
             List<JavaReference> javaReferences = new();
             string[] javaPaths = GetJavaPaths();
 
-            ProcessStartInfo startInfo = new()
-            {
-                CreateNoWindow = true,
-                ErrorDialog = false,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                Arguments = "-version",
-            };
-
             foreach (var path in javaPaths)
             {
-                using (var process = new Process())
+                JavaReference? javaRef;
+                if (TryGetJavaReference(path, out javaRef!))
                 {
-                    if (!Path.Exists(path))
-                        continue;
-
-                    startInfo.FileName = path;
-                    process.StartInfo = startInfo;
-
-                    try
-                    {
-                        process.Start();
-                        if (process.WaitForExit(2000))
-                        {
-                            if (process.ExitCode != 0)
-                                continue;
-                            var output = process.StandardError;
-                            string versionStr = output.ReadToEnd().Split('\n')[0].Split(' ')[2].Trim('"');
-                            JavaVersion javaVer = JavaParser.Default.Parse(versionStr);
-                            if (!javaReferences.Where(p => p.Version.FullVersion == javaVer.FullVersion).Any())
-                                javaReferences.Add(new JavaReference(path, javaVer));
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
+                    if (!javaReferences.Where(p => p.Version.FullVersion == javaRef.Version.FullVersion).Any())
+                        javaReferences.Add(javaRef);
                 }
             }
             return javaReferences.ToArray();
+        }
+
+        public JavaReference GetJavaReference(string javaPath)
+        {
+            javaPath = Path.GetFullPath(javaPath);
+            if (!Path.Exists(javaPath))
+                throw new ArgumentException($"{javaPath} doesn't exists.", "javaPath");
+
+            using (var process = new Process())
+            {
+                ProcessStartInfo startInfo = new()
+                {
+                    CreateNoWindow = true,
+                    ErrorDialog = false,
+                    RedirectStandardError = true,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    Arguments = "-version",
+                    FileName = javaPath,
+                };
+                process.StartInfo = startInfo;
+
+                try
+                {
+                    process.Start();
+                    process.WaitForExit(2000);
+                }
+                catch (Win32Exception win)
+                {
+                    throw new ArgumentException($"Can't open {javaPath}.", "javaPath", win);
+                }
+
+
+                var output = process.StandardError.ReadToEnd();
+
+                // java -version output example:
+                //
+                // openjdk version "1.8.0_372"
+                // OpenJDK Runtime Environment (build 1.8.0_372-b07)
+                // OpenJDK 64-Bit Server VM (build 25.372-b07, mixed mode)
+
+                string versionStr = output.Split('\n')[0].Split(' ')[2].Trim('"');
+                JavaVersion javaVer = JavaParser.Default.Parse(versionStr);
+
+                return new JavaReference(javaPath, javaVer);
+            }
+        }
+
+        public bool TryGetJavaReference(string javaPath, out JavaReference? javaReference)
+        {
+            javaReference = null;
+            try
+            {
+                javaReference = GetJavaReference(javaPath);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         private string[] GetJavaPaths()

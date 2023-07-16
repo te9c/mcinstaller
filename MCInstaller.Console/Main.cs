@@ -49,32 +49,34 @@ return await parserResult.MapResult(async (opts) =>
             return await Task.FromResult(-1);
         }
 
+        JavaReference? java;
         if (opts.JavaPath != null)
         {
             Log.Warn("Manually specified java.");
-            throw new MCInstaller.Core.Exceptions.TodoException();
+            JavaChecker.Default.TryGetJavaReference(opts.JavaPath, out java);
+
+            if (java is null)
+            {
+                Log.Error($"Invalid {opts.JavaPath}.");
+                Log.Error($"Please, ensure that you provide right path to java.");
+                return await Task.FromResult(-1);
+            }
         }
-
-        Log.Information("Trying to find java...");
-
-        JavaChecker javaChecker = new();
-        JavaReference? java = javaChecker.CheckForJava().OrderBy(p => p.Version.Major).LastOrDefault();
-        if (java is null)
+        else
         {
-            Log.Error("Can't find java.");
-            Log.Error("Please, be sure that java is isntalled on your computer.");
-            return await Task.FromResult(-1);
-        }
 
-        // if (opts.ServerType == ServerType.Forge)
-        // {
-        //     JavaVersion requiredVersion = mcversion.Minor switch
-        //     {
-        //         < 15 => throw new Exception(),
-        //         _ => throw new Exception()
-        //     };
-        // }
-        Log.Information("Java is found!");
+            Log.Information("Trying to find java...");
+
+            java = JavaChecker.Default.GetDefaultJavas().OrderBy(p => p.Version.Major).LastOrDefault();
+            if (java is null)
+            {
+                Log.Error("Can't find java.");
+                Log.Error("Please, be sure that java is isntalled on your computer.");
+                return await Task.FromResult(-1);
+            }
+
+            Log.Information("Java is found!");
+        }
 
         Log.VerboseInformation($"Java version: {java.Version.FullVersion}");
         Log.VerboseInformation($"Java path: {java.PathToJava}");
