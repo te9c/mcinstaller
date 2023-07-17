@@ -42,6 +42,7 @@ return await parserResult.MapResult(async (opts) =>
             Log.Warn("Running with --forced option. Be aware if any errors occurs!");
         }
 
+
         MinecraftVersion? mcversion;
         if (!MinecraftVersionParser.Default.TryParse(opts.MinecraftVersion, out mcversion!))
         {
@@ -49,22 +50,10 @@ return await parserResult.MapResult(async (opts) =>
             return await Task.FromResult(-1);
         }
 
+
         JavaReference? java;
-        if (opts.JavaPath != null)
+        if (opts.JavaPath == null)
         {
-            Log.Warn("Manually specified java.");
-            JavaChecker.Default.TryGetJavaReference(opts.JavaPath, out java);
-
-            if (java is null)
-            {
-                Log.Error($"Invalid {opts.JavaPath}.");
-                Log.Error($"Please, ensure that you provide right path to java.");
-                return await Task.FromResult(-1);
-            }
-        }
-        else
-        {
-
             Log.Information("Trying to find java...");
 
             java = JavaChecker.Default.GetDefaultJavas().OrderBy(p => p.Version.Major).LastOrDefault();
@@ -72,14 +61,30 @@ return await parserResult.MapResult(async (opts) =>
             {
                 Log.Error("Can't find java.");
                 Log.Error("Please, be sure that java is isntalled on your computer.");
+                Log.Error("Or you can provide path to java manually with --java option.");
                 return await Task.FromResult(-1);
             }
 
             Log.Information("Java is found!");
         }
+        else
+        {
+            Log.Information("Checking manually specified java...");
+            JavaChecker.Default.TryGetJavaReference(opts.JavaPath, out java);
+
+            if (java is null)
+            {
+                Log.Error($"Can't get java version from {opts.JavaPath}.");
+                Log.Error($"Please, ensure that you provide right path to java.");
+                return await Task.FromResult(-1);
+            }
+
+            Log.Information("Java check passed.");
+        }
 
         Log.VerboseInformation($"Java version: {java.Version.FullVersion}");
         Log.VerboseInformation($"Java path: {java.PathToJava}");
+
 
         JarReference jar = new(mcversion, opts.ServerType);
 
