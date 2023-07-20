@@ -4,6 +4,7 @@ using MCInstaller.Java;
 using MCInstaller.Console;
 using MCInstaller.Core;
 using MCInstaller.Instances;
+using ServerJarsAPI;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -42,6 +43,17 @@ return await parserResult.MapResult(async (opts) =>
             Log.Warn("Running with --forced option. Be aware if any errors occurs!");
         }
 
+        try
+        {
+            ServerJars serverJars = new();
+            await serverJars.GetLatest("vanilla", "vanilla");
+        }
+        catch
+        {
+            Log.Error("Can't connect to ServerJarsAPI.");
+            return await Task.FromResult(-1);
+        }
+
 
         MinecraftVersion? mcversion;
         if (!MinecraftVersionParser.Default.TryParse(opts.MinecraftVersion, out mcversion!))
@@ -51,59 +63,32 @@ return await parserResult.MapResult(async (opts) =>
         }
 
 
-        JavaReference? java;
-        if (opts.JavaPath == null)
+        JavaReference? java = null;
+        if (opts.JavaPath != null)
         {
-            Log.Information("Trying to find java...");
-
-            java = JavaChecker.Default.GetDefaultJavas().OrderBy(p => p.Version.Major).LastOrDefault();
-            if (java is null)
+            Log.Warn("Manually specified java.");
+            if (!Path.Exists(opts.JavaPath))
             {
-                Log.Error("Can't find java.");
-                Log.Error("Please, be sure that java is isntalled on your computer.");
-                Log.Error("Or you can provide path to java manually with --java option.");
+                Log.Error($"Path {opts.JavaPath} doesn't exists.");
                 return await Task.FromResult(-1);
             }
-
-            Log.Information("Java is found!");
-        }
-        else
-        {
-            Log.Information("Checking manually specified java...");
-            JavaChecker.Default.TryGetJavaReference(opts.JavaPath, out java);
-
-            if (java is null)
+            if (!JavaChecker.Default.TryGetJavaReference(opts.JavaPath, out java))
             {
-                Log.Error($"Can't get java version from {opts.JavaPath}.");
-                Log.Error($"Please, ensure that you provide right path to java.");
+                Log.Error($"Java check of file {opts.JavaPath} failed.");
+                Log.Error($"Please, ensure that you provided valid java path.");
                 return await Task.FromResult(-1);
             }
-
-            Log.Information("Java check passed.");
         }
 
-        Log.VerboseInformation($"Java version: {java.Version.FullVersion}");
-        Log.VerboseInformation($"Java path: {java.PathToJava}");
-
-
-        JarReference jar = new(mcversion, opts.ServerType);
-
-        Log.Information("Initializing server.");
-
-        IServerInstance server = opts.ServerType switch
+        IServerInstance instance = opts.ServerType switch
         {
-            ServerType.Vanilla => new VanillaInstance(jar, java, opts.InstallationPath),
-            ServerType.Forge => new ForgeInstance(jar, java, opts.InstallationPath),
-            ServerType.Paper => new PaperInstance(jar, java, opts.InstallationPath),
-            _ => throw new Exception("Invalid ServerType")
+            ServerType.Vanilla => new VanillaInstance(opts.InstallationPath, mcversion, java),
+            // ServerType.Forge => new ForgeInstance(opts.InstallationPath, mcverision, java),
+            // ServerType.Paper => new PaperInstance(opts.InstallationPath, mcversion, java),
+            _ => throw new Exception()
         };
-        await server.Init();
 
-        Log.Information("Initializing done.");
-        Log.Information($"Minecraft {jar.Type} {jar.Version} is installed.");
-        Log.Information($"Now you can run run.sh to start your server.");
-
-        return await Task.FromResult(0);
+        return await instance.Init();
     },
     _ =>
     {

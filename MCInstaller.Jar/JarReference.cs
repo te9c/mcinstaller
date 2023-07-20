@@ -51,12 +51,12 @@ namespace MCInstaller.Jar
             return Version.ToString() + '-' + Type.ToString() + ".jar";
         }
 
-        public async Task InstallAsync(string path)
+        public async Task DownloadAsync(string path)
         {
-            await InstallAsync(path, GetFileName());
+            await DownloadAsync(path, GetFileName());
         }
 
-        public async Task InstallAsync(string path, string fileName)
+        public async Task DownloadAsync(string path, string fileName)
         {
             if (!await IsValidAsync())
                 throw new Exception($"{this} is not valid");

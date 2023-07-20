@@ -5,10 +5,10 @@ namespace MCInstaller.Instances
 {
     public interface IServerInstance
     {
-        public JarReference Jar { get; init; }
-        public JavaReference Java { get; init; }
+        public JavaReference? Java { get; }
+        public MinecraftVersion Version { get; init; }
         public string WorkingDir { get; init; }
 
-        public Task Init();
+        public Task<int> Init();
     }
 }

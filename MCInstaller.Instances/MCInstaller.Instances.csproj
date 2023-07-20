@@ -1,19 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\MCInstaller.Java\MCInstaller.Java.csproj" />
+    <ProjectReference Include="..\MCInstaller.Jar\MCInstaller.Jar.csproj" />
+    <ProjectReference Include="..\MCInstaller.Core\MCInstaller.Core.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ServerJars" Version="1.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MCInstaller.Core\MCInstaller.Core.csproj" />
-    <ProjectReference Include="..\MCInstaller.Jar\MCInstaller.Jar.csproj" />
-    <ProjectReference Include="..\MCInstaller.Java\MCInstaller.Java.csproj" />
-  </ItemGroup>
 
 </Project>

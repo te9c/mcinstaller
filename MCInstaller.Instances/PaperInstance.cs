@@ -5,7 +5,7 @@ namespace MCInstaller.Instances
 {
     public class PaperInstance : VanillaInstance, IServerInstance
     {
-        public PaperInstance(JarReference jar, JavaReference java, string workingDir) : base(jar, java, workingDir)
+        public PaperInstance(string workingDir, MinecraftVersion version, JavaReference? java = null) : base(workingDir, version, java)
         {
         }
     }

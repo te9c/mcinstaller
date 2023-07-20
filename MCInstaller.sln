@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCInstaller.Console", "MCIn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCInstaller.Core", "MCInstaller.Core\MCInstaller.Core.csproj", "{9AC227B9-44FD-4A2F-9A2D-F5520AFE14C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCInstaller.Instances", "MCInstaller.Instances\MCInstaller.Instances.csproj", "{F1EE2016-1442-490D-9A0E-6B40C17796D7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCInstaller.Java", "MCInstaller.Java\MCInstaller.Java.csproj", "{3BAAED15-83A5-4E49-8FA1-7B8DA7E0DC36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCInstaller.Jar", "MCInstaller.Jar\MCInstaller.Jar.csproj", "{1BFDDDF9-522F-4392-A0C6-3D9BB06F3EA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCInstaller.Instances", "MCInstaller.Instances\MCInstaller.Instances.csproj", "{C7216E7B-5FA9-45E8-8BF7-FF168DCAE312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +30,6 @@ Global
 		{9AC227B9-44FD-4A2F-9A2D-F5520AFE14C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AC227B9-44FD-4A2F-9A2D-F5520AFE14C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AC227B9-44FD-4A2F-9A2D-F5520AFE14C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1EE2016-1442-490D-9A0E-6B40C17796D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1EE2016-1442-490D-9A0E-6B40C17796D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1EE2016-1442-490D-9A0E-6B40C17796D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1EE2016-1442-490D-9A0E-6B40C17796D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3BAAED15-83A5-4E49-8FA1-7B8DA7E0DC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BAAED15-83A5-4E49-8FA1-7B8DA7E0DC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BAAED15-83A5-4E49-8FA1-7B8DA7E0DC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -42,5 +38,9 @@ Global
 		{1BFDDDF9-522F-4392-A0C6-3D9BB06F3EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BFDDDF9-522F-4392-A0C6-3D9BB06F3EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BFDDDF9-522F-4392-A0C6-3D9BB06F3EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7216E7B-5FA9-45E8-8BF7-FF168DCAE312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7216E7B-5FA9-45E8-8BF7-FF168DCAE312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7216E7B-5FA9-45E8-8BF7-FF168DCAE312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7216E7B-5FA9-45E8-8BF7-FF168DCAE312}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

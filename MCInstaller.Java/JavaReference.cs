@@ -7,7 +7,7 @@ namespace MCInstaller.Java
 
         internal JavaReference(string path, JavaVersion version)
         {
-            PathToJava = path;
+            PathToJava = Path.GetFullPath(path);
             Version = version;
         }
     }

@@ -2,9 +2,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MCInstaller.Core\MCInstaller.Core.csproj" />
-    <ProjectReference Include="..\MCInstaller.Instances\MCInstaller.Instances.csproj" />
     <ProjectReference Include="..\MCInstaller.Java\MCInstaller.Java.csproj" />
     <ProjectReference Include="..\MCInstaller.Jar\MCInstaller.Jar.csproj" />
+    <ProjectReference Include="..\MCInstaller.Instances\MCInstaller.Instances.csproj" />
   </ItemGroup>
 
   <ItemGroup>
