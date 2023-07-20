@@ -35,7 +35,18 @@ namespace MCInstaller.Instances
                     Log.Error("Install java with your default package manager or provide manually with --java option.");
                     return await Task.FromResult(-1);
                 }
-                Java = javas.MaxBy(p => p.Version.Minor)!;
+                if (Version.Minor < 17 && javas.Where(p => p.Version.Major == 8).Any())
+                {
+                    Java = javas.Where(p => p.Version.Major == 8).First();
+                }
+                else if (Version.Minor >= 17 && javas.Where(p => p.Version.Major == 16).Any())
+                {
+                    Java = javas.Where(p => p.Version.Major == 16).First();
+                }
+                else
+                {
+                    Java = javas.MaxBy(p => p.Version.Minor)!;
+                }
             }
             if (!CheckJava())
                 return await Task.FromResult(-1);
@@ -96,7 +107,21 @@ namespace MCInstaller.Instances
 
         private bool CheckJava()
         {
-            // throw new TodoException();
+            if (Java == null)
+                return false;
+            if (Java.Version.Major < 16 && Version.Minor >= 17)
+            {
+                Log.Error("Java 16+ required for minecraft 1.17+.");
+                return false;
+            }
+            if (Java.Version.Major != 8 && Version.Minor < 17)
+            {
+                Log.Warn("It's recommended to use java 8 for minecraft versions below 1.17.");
+            }
+            if (Java.Version.Major != 16 && Version.Minor >= 17)
+            {
+                Log.Warn("It's recommended to use java 16 for minecraft versions 1.17+.");
+            }
             return true;
         }
 

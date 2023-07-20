@@ -63,7 +63,7 @@ namespace MCInstaller.Jar
 
             fileName = Path.ChangeExtension(fileName, ".jar");
 
-            Log.Information($"Downloading {Type.ToString()} {Version.ToString()}.");
+            Log.Information($"Downloading {Type.ToString()} {Version.ToString()} jar.");
             Log.VerboseInformation($"Path: {Path.GetFullPath(path)}");
 
             var serverJar = new ServerJars();
